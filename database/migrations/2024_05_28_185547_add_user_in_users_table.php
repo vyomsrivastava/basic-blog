@@ -15,6 +15,7 @@ return new class extends Migration
         User::create([
             'email' => 'captainvyom@google.com',
             'name' => 'Vyom Srivastava',
+            'email_verified' => 1,
             'password' => bcrypt('admin@1234')
         ]);
     }
