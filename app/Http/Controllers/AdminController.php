@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
 
 class AdminController extends Controller
 {
@@ -35,6 +35,8 @@ class AdminController extends Controller
     public function dashboard()
     {
         $allBlogPosts = Blog::select('title', 'updated_at', 'id')->get();
+
+        return view('admin.dashboard');
     }
 
     public function logout(Request $request): RedirectResponse
