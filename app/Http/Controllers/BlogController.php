@@ -13,7 +13,7 @@ class BlogController extends Controller
 {
     public function returnBlogList()
     {
-        $allBlogPosts = Blog::select('title', 'updated_at', 'id')->get();
+        $allBlogPosts = Blog::select('title', 'updated_at', 'id', 'content', 'featured_image')->get();
 
         return view('index')
             ->with('posts', $allBlogPosts);
