@@ -77,7 +77,7 @@ class BlogController extends Controller
         }
     }
 
-    public function deleteArticle($id) 
+    public function deleteArticle(int $id) 
     {
         $article = Blog::find($id);
         if($article){
@@ -85,6 +85,16 @@ class BlogController extends Controller
             return redirect()->route('dashboard')->with('success' , 'Deleted Successfully');
         }else{
             return redirect()->route('dashboard')->with('error', 'Article not found');
+        }
+    }
+
+    public function articleDetail(int $id) 
+    {
+        $article = Blog::find($id);
+        if($article){
+            return view('article-detail')->with('article', $article);
+        }else{
+            return redirect()->route('homepage')->with('error', 'Article not found');
         }
     }
 }
