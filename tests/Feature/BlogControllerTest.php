@@ -73,7 +73,7 @@ it('it does not update article because of missing required param and returns val
     $this->assertEquals($errors->get('content')[0], 'The content field is required.'); //Check for exact error message
 });
 
-it('it doesnot update article because of incorrect article ID and returns 404', function (){
+it('it doesnot update article because of incorrect article ID and returns error', function (){
     $this->withExceptionHandling();
     $user = User::first();
     $post = Blog::create(
@@ -91,4 +91,103 @@ it('it doesnot update article because of incorrect article ID and returns 404', 
         'featured_image' => $post->featured_image
     ]);
     $response->assertJson(['success' => false, 'message' => "Article not found"]);
+});
+
+it('it returns dashboard of admin page with article variable', function (){
+    $this->withExceptionHandling();
+    $user = User::first();
+    $post = Blog::create(
+            [
+                "title" => "Random Title",
+                "content" => "Content",
+                "is_public" => 1,
+                "featured_image" => "apple"
+            ]
+        );
+    
+    $response = $this->actingAs($user)->get(route('dashboard'));
+    $response->assertStatus(200);
+    $response->assertViewHas('articles');
+});
+
+it('it returns dashboard of admin page with article collection', function (){
+    $this->withExceptionHandling();
+    $user = User::first();
+    Blog::create(
+            [
+                "title" => "Random Title",
+                "content" => "Content",
+                "is_public" => 1,
+                "featured_image" => "apple"
+            ]
+        );
+    $articles = Blog::get();
+    $response = $this->actingAs($user)->get(route('dashboard'));
+    $response->assertStatus(200);
+    $response->assertViewHas('articles');
+    $response->assertViewHas('articles', $articles); 
+});
+
+it('it returns edit page for an article with all details', function (){
+    $this->withExceptionHandling();
+    $user = User::first();
+    $post = Blog::create(
+            [
+                "title" => "Random Title",
+                "content" => "Content",
+                "is_public" => 1,
+                "featured_image" => "apple"
+            ]
+        );
+    $response = $this->actingAs($user)->get(route('edit-article', ['id' => $post->id]));
+    $response->assertStatus(200);
+    $response->assertViewHas('article');
+    $response->assertViewHas('article', $post); 
+});
+
+it('it returns 404 instead of article edit page', function (){
+    $this->withExceptionHandling();
+    $user = User::first();
+    $post = Blog::create(
+            [
+                "title" => "Random Title",
+                "content" => "Content",
+                "is_public" => 1,
+                "featured_image" => "apple"
+            ]
+        );
+    $response = $this->actingAs($user)->get(route('edit-article', ['id' => 69696969]));
+    $response->assertStatus(404);
+});
+
+it('it returns article details page', function (){
+    $this->withExceptionHandling();
+    $user = User::first();
+    $post = Blog::create(
+            [
+                "title" => "Random Title",
+                "content" => "Content",
+                "is_public" => 1,
+                "featured_image" => "apple"
+            ]
+        );
+    $response = $this->actingAs($user)->get(route('detail-article', ['id' => $post->id]));
+    $response->assertStatus(200);
+    $response->assertViewHas('article');
+    $response->assertViewHas('article', $post); 
+});
+
+it('it returns 404 as the article id doesn not exist', function (){
+    $this->withExceptionHandling();
+    $user = User::first();
+    $post = Blog::create(
+            [
+                "title" => "Random Title",
+                "content" => "Content",
+                "is_public" => 1,
+                "featured_image" => "apple"
+            ]
+        );
+    $response = $this->actingAs($user)->get(route('detail-article', ['id' => 6969696969]));
+    $response->assertStatus(404);
 });

@@ -51,7 +51,7 @@ class BlogController extends Controller
         if($article){
             return view('admin.edit-article')->with('article', $article);
         }else{
-            return route('dashboard');
+            abort(404);
         }
     }
 
@@ -94,7 +94,7 @@ class BlogController extends Controller
         if($article){
             return view('article-detail')->with('article', $article);
         }else{
-            return redirect()->route('homepage')->with('error', 'Article not found');
+            abort(404);
         }
     }
 }
