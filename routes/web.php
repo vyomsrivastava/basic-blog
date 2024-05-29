@@ -21,3 +21,5 @@ Route::post('/create-article', [BlogController::class, 'storeArticle'])->name('c
 Route::get('/edit-article/{id}', [BlogController::class, 'editArticle'])->name('edit-article')->middleware('auth');
 
 Route::patch('/update-article/{id}', [BlogController::class, 'updateArticle'])->name('update-article')->middleware('auth');
+
+Route::get('/delete-article/{id}', [BlogController::class, 'deleteArticle'])->name('delete-article')->middleware('auth'); // TODO: change it to DELETE method

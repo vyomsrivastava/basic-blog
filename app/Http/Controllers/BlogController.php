@@ -76,4 +76,15 @@ class BlogController extends Controller
             echo "H";
         }
     }
+
+    public function deleteArticle($id) 
+    {
+        $article = Blog::find($id);
+        if($article){
+            $article->delete();
+            return redirect()->route('dashboard')->with('success' , 'Deleted Successfully');
+        }else{
+            return redirect()->route('dashboard')->with('error', 'Article not found');
+        }
+    }
 }
