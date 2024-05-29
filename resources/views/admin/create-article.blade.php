@@ -10,7 +10,8 @@ body>main>form>div>div>div.ck.ck-reset.ck-editor.ck-rounded-corners {
     @csrf
     <div class="container mt-4">
         <div class="row mb-2">
-            <input class="form-control form-control-lg" type="text" name="title" placeholder="Title" aria-label=".form-control-lg example">
+            <input class="form-control form-control-lg" type="text" name="title" placeholder="Title"
+                aria-label=".form-control-lg example">
         </div>
         <div class="row mb-2">
             <textarea id="editor" name="content"> </textarea>
@@ -29,41 +30,57 @@ body>main>form>div>div>div.ck.ck-reset.ck-editor.ck-rounded-corners {
                 }
 
             ).catch(error => {
-                    console.error(error);
-                }
-            );
+                console.error(error);
+            });
             </script>
         </div>
-        <div>
+        <div class="row mb-3">
+            <input type="file" id="file" class="form-control form-control-lg" aria-label="Large file input example"
+                name="featured_image">
+        </div>
+        <div class="row">
             <button class="btn btn-primary py-2" type="submit">Create</button>
         </div>
     </div>
-    
-</form>
-<script>
-    $("form").submit(function(e){
-            e.preventDefault();
-            var values = $(this).serializeArray();
 
-            
-            console.log(datas);
-            var data = new FormData();
-            var datas = {};
-            values.forEach(element => {
-                datas[element['name']] = element['value'].replace(/<[^>]+>/g, '');
-                data.append(element['name'],element['value'])
-            });
-            $.ajax({
-                url: "{{ route('create-article')}}" ,
-                data: data,
-                cache: false,
-                contentType: false,
-                processData: false,
-                method: 'POST',
-                success: function(data){
-                    alert(data);
-                }
-            });
+</form>
+
+<script>
+$("form").submit(function(e) {
+    e.preventDefault();
+    const toBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
     });
+    main($(this));
+    async function main(form) {
+        const file = document.querySelector('#file').files[0];
+        let values = form.serializeArray();
+        let formD = new FormData();
+        values.forEach(element => {
+            formD.append(element['name'], element['value'])
+        });
+
+        let base64Image = await toBase64(file);
+
+        await formD.append("featured_image", await toBase64(file));
+        await $.ajax({
+            url: "{{ route('create-article')}}",
+            data: formD,
+            cache: false,
+            contentType: false,
+            processData: false,
+            method: 'POST',
+            success: function(data) {
+                if('route' in data){
+                    window.location.replace(data.route);
+                }
+            }
+        });
+    }
+});
 </script>
+
 @include('includes.footer')

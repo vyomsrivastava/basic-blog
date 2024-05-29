@@ -13,5 +13,6 @@ class Blog extends Model
         'title',
         'content',
         'is_public',
+        'featured_image'
     ];
 }

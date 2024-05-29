@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Blog;
+use Exception;
 
-use Illuminate\Http\RedirectResponse;
+use App\Models\Blog;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 
 class BlogController extends Controller
 {
@@ -23,13 +25,25 @@ class BlogController extends Controller
     }
 
 
-    public function storeArticle(Request $request): RedirectResponse
+    public function storeArticle(Request $request): JsonResponse
     {
+        ini_set('memory_limit', '-1');
         $inputs = $request->validate([
             'title' => ['required'],
             'content' => ['required'],
             'featured_image' => ['required'],
         ]);
-        dd($inputs);
+        try{
+            $article = new Blog();
+            $article->title = $inputs['title'];
+            $article->content = $inputs['content'];
+            $article->featured_image = $inputs['featured_image'];
+            $article->save();
+            return response()->json(['success' => true, 'route' => route('dashboard')]);
+        }catch(Exception $e){
+            print_r($e);
+            return response()->json(['success' => false, 'message' => "Something wenr wrong"]);
+        }
+        
     }
 }
