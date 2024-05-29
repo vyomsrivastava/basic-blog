@@ -35,5 +35,14 @@ This controller handles the logic for login and logout only. There for it only h
 
 ##### Blog Controller
 
-This controller handles all the requests regarding the blog's CRUD
+This controller handles all the requests regarding the blog's CRUD and has below functions:
+
+* `returnBlogList` : Returns blog list and shows them on index page
+* `createArticle` : Returns the create article page
+* `storeArticle` : Responsible for inserting the article in the db. It also performs validations
+* `editArticle` : Returns the view for editing an article
+* `updateArticle` : Responsible for validating the input and then updates the article based on changes
+* `deleteArticle` : Deletes an article and return 404 if passed incorrect ID
+* `articleDetail` : Returns the details of an article with the view
+  
 
