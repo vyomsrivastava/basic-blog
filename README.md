@@ -71,6 +71,8 @@ Run `npm install` this will install the basic prerequisites
 
 Then execute `sudo npx cypress open` to open the Cypress UI and in E2E section you will find two files `login.cy.js` and `logout.cy.js`
 
+The code for the E2E test cases are located at `cypress/e2e/integration/`
+
 ### TODO:
 * Implement CRUD for category
 * Refactor JS code
