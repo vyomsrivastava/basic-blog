@@ -21,16 +21,8 @@ body>main>form>div>div>div.ck.ck-reset.ck-editor.ck-rounded-corners {
             <textarea id="editor" name="content"> {!! $article->content !!}</textarea>
             <script>
             ClassicEditor.create(document.querySelector('#editor'), {}).then(editor => {
-                    window.editor = editor;
-                    const imageBtn = document.querySelector('.ck-file-dialog-button');
-                    if (!imageBtn) return;
-                    let imageIcon = imageBtn.querySelector('svg.ck-icon');
-                    imageIcon.style.width = 'var(--ck-icon-size)';
-                    const dropdownBtn = document.querySelector('button.ck-splitbutton__arrow');
-                    let downAngleIcon = dropdownBtn.querySelector('svg.ck-icon');
-                    imageBtn.style.display = 'none';
-                    downAngleIcon.remove()
-                    dropdownBtn.prepend(imageIcon);
+                    
+                    console.log(editor);
                 }
 
             ).catch(error => {
@@ -64,36 +56,43 @@ $("form").submit(function(e) {
     async function main(form) {
         const file = document.querySelector('#file').files[0];
         let values = form.serializeArray();
-        if(!values.hasOwnProperty('content')){
+        
+        let formD = new FormData();
+        let flag = false;
+
+        values.forEach(element => {
+            formD.append(element['name'], element['value']);
+            if(element['name'] == "content" && element['value'].length > 0){
+                flag = true;
+            }
+        });
+        
+        if(!flag){
             let errorElement = document.getElementById("error1");
             errorElement.innerHTML = "Please fill content";
             errorElement.style.display = "block";
-        }else{
-            let formD = new FormData();
-            console.log(values);
-            values.forEach(element => {
-                formD.append(element['name'], element['value'])
-            });
-            if(file){
-                let base64Image = await toBase64(file);
-                await formD.append("featured_image", await toBase64(file));
-            }
-            
-            await $.ajax({
-                url: "{{ route('update-article', ['id'=> $article->id])}}",
-                data: formD,
-                cache: false,
-                contentType: false,
-                processData: false,
-                method: 'POST',
-                success: function(data) {
-                    if(data.hasOwnProperty("route")){
-                        window.location.replace(data.route);    
-                    }
-                    
-                }
-            });
+            return false;
         }
+        if(file){
+            let base64Image = await toBase64(file);
+            await formD.append("featured_image", await toBase64(file));
+        }
+        
+        await $.ajax({
+            url: "{{ route('update-article', ['id'=> $article->id])}}",
+            data: formD,
+            cache: false,
+            contentType: false,
+            processData: false,
+            method: 'POST',
+            success: function(data) {
+                if(data.hasOwnProperty("route")){
+                    window.location.replace(data.route);    
+                }
+                
+            }
+        });
+        
     }
 });
 </script>
