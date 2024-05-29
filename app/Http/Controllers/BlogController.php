@@ -73,7 +73,7 @@ class BlogController extends Controller
             $article->save();
             return response()->json(['success' => true, 'route' => route('dashboard')]);
         }else{
-            echo "H";
+            return response()->json(['success' => false, 'message' => "Article not found"]);
         }
     }
 
