@@ -44,5 +44,17 @@ This controller handles all the requests regarding the blog's CRUD and has below
 * `updateArticle` : Responsible for validating the input and then updates the article based on changes
 * `deleteArticle` : Deletes an article and return 404 if passed incorrect ID
 * `articleDetail` : Returns the details of an article with the view
+
+### Routes
+
+All the routes are present in `routes/web.php`. Some of the routes are publically accessible while some of the routes have middleware `auth` so that it can be usedonly by logged in users.
+
+#### How to run test commands?
+
+All the controllers has their own tests. Majorily, you will find two test files located at: `tests/Feature/` are `BlogControllerTest` and `AdminControllerTest`
+
+To execute the tests make sure you have `basic_blog_test` database created. If it's created then just run `php artisan test --env=testing`
+
+The command will pick the credentials from `.env.testing` so please make sure that the file is updated with correct credentials.
   
 
