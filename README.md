@@ -9,7 +9,7 @@ The application uses PHP, MySQL, Apache and Laravel. Please make sure you have a
 Clone the project and once you're inside the project copy and paste `.env.example` and rename it to `.env` . After that use phpMyAdmin or MySQLWorkbench and create two databases with the following names:
 
 * basic_blog // FOR PROD
-* basic_blog_testi // FOR TESTING
+* basic_blog_test // FOR TESTING
 
 Now replace all the details in `.env` and `.env.testing` with the database credentials. Like -> DB_CONNECTION, DB_HOST, etc.
 
@@ -19,7 +19,12 @@ Once done, now run `composer install` command to install all the dependencies an
 
 ### Step -2: Checking out the project
 
-After everything is done, you need check your localhost to see if everything is working or not. So just visit http://localhost/basic-blog and you should be able to see the project running!
+After everything is done, you need check your localhost to see if everything is working or not. So just visit http://localhost/basic-blog and you should be able to see the project running! Since this is the first time, so you will only see the header. Click on `Login` button and fill the below credentials:
+
+Email: `captainvyom@google.com`
+Password: `admin@1234`
+
+With the above credentials, you should be able to login and create new articles. Your new articles will be visible in `http://localhost/basic-blog` as well as `http://localhost/basic-blog/dashboard`
 
 ## Code Explanation
 
@@ -65,3 +70,8 @@ The project includes login and logout tests. Due to time constraints, I couldn't
 Run `npm install` this will install the basic prerequisites
 
 Then execute `sudo npx cypress open` to open the Cypress UI and in E2E section you will find two files `login.cy.js` and `logout.cy.js`
+
+### TODO:
+* Implement CRUD for category
+* Refactor JS code
+* Implement more test cases for E2E testing
