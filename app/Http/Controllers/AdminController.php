@@ -34,9 +34,9 @@ class AdminController extends Controller
 
     public function dashboard()
     {
-        $allBlogPosts = Blog::select('title', 'updated_at', 'id')->get();
+        $allBlogPosts = Blog::select('title', 'updated_at', 'id', 'content', 'featured_image')->get();
 
-        return view('admin.dashboard');
+        return view('admin.dashboard')->with('articles', $allBlogPosts);
     }
 
     public function logout(Request $request): RedirectResponse

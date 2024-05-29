@@ -27,7 +27,7 @@ class BlogController extends Controller
 
     public function storeArticle(Request $request): JsonResponse
     {
-        ini_set('memory_limit', '-1');
+        
         $inputs = $request->validate([
             'title' => ['required'],
             'content' => ['required'],
@@ -41,9 +41,35 @@ class BlogController extends Controller
             $article->save();
             return response()->json(['success' => true, 'route' => route('dashboard')]);
         }catch(Exception $e){
-            print_r($e);
-            return response()->json(['success' => false, 'message' => "Something wenr wrong"]);
+            return response()->json(['success' => false, 'message' => "Something went wrong"]);
         }
-        
+    }
+
+    public function editArticle($id) 
+    {
+        $article = Blog::find($id);
+        if($article){
+            return view('admin.edit-article')->with('article', $article);
+        }else{
+            return route('dashboard');
+        }
+    }
+
+    public function updateArticle(Request $request, $id) 
+    {
+        $inputs = $request->validate([
+            'title' => ['required'],
+            'content' => ['required'],
+        ]);
+
+        $article = Blog::find($id);
+        if($article){
+            $article->title = $inputs['title'];
+            $article->content = $inputs['content'];
+            $article->save();
+            return view('admin.edit-article')->with('article', $article);
+        }else{
+            echo "H";
+        }
     }
 }

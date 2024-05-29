@@ -17,3 +17,7 @@ Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard
 Route::get('/create-article', [BlogController::class, 'createArticle'])->name('create-article')->middleware('auth');
 
 Route::post('/create-article', [BlogController::class, 'storeArticle'])->name('create-article')->middleware('auth');
+
+Route::get('/edit-article/{id}', [BlogController::class, 'editArticle'])->name('edit-article')->middleware('auth');
+
+Route::patch('/update-article/{id}', [BlogController::class, 'updateArticle'])->name('update-article')->middleware('auth');
