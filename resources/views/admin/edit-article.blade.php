@@ -10,6 +10,9 @@ body>main>form>div>div>div.ck.ck-reset.ck-editor.ck-rounded-corners {
     @csrf
     @method('PATCH')
     <div class="container mt-4">
+    <div class="row alert alert-danger alert-dismissible fade show" role="alert" id="error1" style="display: none;">
+                
+        </div> 
         <div class="row mb-2">
             <input class="form-control form-control-lg" type="text" name="title" value="{{$article->title}}"
                 aria-label=".form-control-lg example">
@@ -61,30 +64,36 @@ $("form").submit(function(e) {
     async function main(form) {
         const file = document.querySelector('#file').files[0];
         let values = form.serializeArray();
-        let formD = new FormData();
-        console.log(values);
-        values.forEach(element => {
-            formD.append(element['name'], element['value'])
-        });
-        if(file){
-            let base64Image = await toBase64(file);
-            await formD.append("featured_image", await toBase64(file));
-        }
-        
-        await $.ajax({
-            url: "{{ route('update-article', ['id'=> $article->id])}}",
-            data: formD,
-            cache: false,
-            contentType: false,
-            processData: false,
-            method: 'POST',
-            success: function(data) {
-                if(data.hasOwnProperty("route")){
-                    window.location.replace(data.route);    
-                }
-                
+        if(!values.hasOwnProperty('content')){
+            let errorElement = document.getElementById("error1");
+            errorElement.innerHTML = "Please fill content";
+            errorElement.style.display = "block";
+        }else{
+            let formD = new FormData();
+            console.log(values);
+            values.forEach(element => {
+                formD.append(element['name'], element['value'])
+            });
+            if(file){
+                let base64Image = await toBase64(file);
+                await formD.append("featured_image", await toBase64(file));
             }
-        });
+            
+            await $.ajax({
+                url: "{{ route('update-article', ['id'=> $article->id])}}",
+                data: formD,
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                success: function(data) {
+                    if(data.hasOwnProperty("route")){
+                        window.location.replace(data.route);    
+                    }
+                    
+                }
+            });
+        }
     }
 });
 </script>

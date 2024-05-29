@@ -132,8 +132,13 @@
                 </ul>
 
                 <div class="text-end">
-                    <button type="button" class="btn btn-outline-light me-2">Categories</button>
-                    <button type="button" class="btn btn-warning">Add New Article</button>
+                    @if(Auth::check())
+                       <a href="{{route('logout')}}" > <button type="button" class="btn btn-outline-light me-2">Logout</button></a>
+                    @endif
+                    @if(!Auth::check())
+                    <a href="{{route('login')}}" > <button type="button" class="btn btn-outline-light me-2">Login</button></a>
+                    @endif
+                    <a href="{{route('create-article')}}" > <button type="button" class="btn btn-warning">Add New Article</button> </a>
                 </div>
             </div>
         </div>
