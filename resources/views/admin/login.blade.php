@@ -8,21 +8,29 @@
         {!! Session::get('message') !!}
     </div>
     @endif
+    @if (count($errors) > 0)
+        <div class="alert alert-danger alert-dismissible fade show">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     <div class="form-floating">
-        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email"
+        <input type="email" id="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email"
             required>
         <label for="floatingInput">Email address</label>
     </div>
     <div class="form-floating">
-        <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password"
+        <input type="password" id="password" class="form-control" id="floatingPassword" placeholder="Password" name="password"
             required>
         <label for="floatingPassword">Password</label>
     </div>
 
 
     <button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
-    <p class="mt-5 mb-3 text-body-secondary">&copy; 2017–2024</p>
 </form>
 
 
