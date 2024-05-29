@@ -49,7 +49,7 @@ This controller handles all the requests regarding the blog's CRUD and has below
 
 All the routes are present in `routes/web.php`. Some of the routes are publically accessible while some of the routes have middleware `auth` so that it can be usedonly by logged in users.
 
-#### How to run test commands?
+#### How to run test commands - feature test using PEST?
 
 All the controllers has their own tests. Majorily, you will find two test files located at: `tests/Feature/` are `BlogControllerTest` and `AdminControllerTest`
 
@@ -58,3 +58,10 @@ To execute the tests make sure you have `basic_blog_test` database created. If i
 The command will pick the credentials from `.env.testing` so please make sure that the file is updated with correct credentials.
   
 
+#### How to execute E2E tests?
+
+The project includes login and logout tests. Due to time constraints, I couldn't work on all of the tests :)
+
+Run `npm install` this will install the basic prerequisites
+
+Then execute `sudo npx cypress open` to open the Cypress UI and in E2E section you will find two files `login.cy.js` and `logout.cy.js`
