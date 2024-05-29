@@ -66,10 +66,11 @@ $("form").submit(function(e) {
         values.forEach(element => {
             formD.append(element['name'], element['value'])
         });
-
-        let base64Image = await toBase64(file);
-
-        await formD.append("featured_image", await toBase64(file));
+        if(file){
+            let base64Image = await toBase64(file);
+            await formD.append("featured_image", await toBase64(file));
+        }
+        
         await $.ajax({
             url: "{{ route('update-article', ['id'=> $article->id])}}",
             data: formD,
@@ -78,9 +79,10 @@ $("form").submit(function(e) {
             processData: false,
             method: 'POST',
             success: function(data) {
-                if('route' in data){
-                    window.location.replace(data.route);
+                if(data.hasOwnProperty("route")){
+                    window.location.replace(data.route);    
                 }
+                
             }
         });
     }

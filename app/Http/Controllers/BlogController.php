@@ -60,14 +60,18 @@ class BlogController extends Controller
         $inputs = $request->validate([
             'title' => ['required'],
             'content' => ['required'],
+            'featured_image' => ['nullable']
         ]);
 
         $article = Blog::find($id);
         if($article){
             $article->title = $inputs['title'];
             $article->content = $inputs['content'];
+            if(isset($inputs['featured_image'])){
+                $article->featured_image = $inputs['featured_image'];
+            }
             $article->save();
-            return view('admin.edit-article')->with('article', $article);
+            return response()->json(['success' => true, 'route' => route('dashboard')]);
         }else{
             echo "H";
         }
